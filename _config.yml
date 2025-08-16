@@ -1,0 +1,21 @@
+# GitHub Pages Configuration
+title: POC_Humesh
+description: Interactive dashboard powered by Qlik Cloud
+baseurl: "" # Leave empty for user/organization pages
+url: "https://github.com/hsindpure" # Your GitHub Pages URL
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+theme: minima
+
+# GitHub Pages specific settings
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+# Exclude files from processing
+exclude:
+  - README.md
+  - LICENSE
+  - .gitignore
