@@ -2,7 +2,7 @@
 title: POC_Humesh
 description: Interactive dashboard powered by Qlik Cloud
 baseurl: "" # Leave empty for user/organization pages
-url: "https://github.com/hsindpure" # Your GitHub Pages URL
+url: "https://hsindpure.github.io" # Your GitHub Pages URL
 
 # Build settings
 markdown: kramdown
@@ -18,4 +18,5 @@ plugins:
 exclude:
   - README.md
   - LICENSE
+
   - .gitignore
