@@ -1141,37 +1141,43 @@ const fetchDataAndProcess = async (objectID) => {
 					
 					
 			
-            const decryptedKey = "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";
+            const decryptedKey = "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";
 
-                const baseUrl = "https://api.llama.ai/v1/chat/completions";
+                // const baseUrl = "https://api.groq.com/openai/v1/chat/completions";
 
 
-                let model = "llama-3-8b-chat";
-              
+                // let model = "meta-llama/llama-4-scout-17b-16e-instruct";
 
-                const url = baseUrl;
+                // const url = baseUrl;
                 const temp = 0.2; // Ranges 0-2
 
 					async function makeApiCall(content) {
-										const response = await fetch('https://api.openai.com/v1/chat/completions', {
-											method: 'POST',
-											headers: {
-											  'Authorization': `Bearer ${decryptedKey}`,
-											  'Content-Type': 'application/json'
-											},
-											body: JSON.stringify({
-											  model: 'gpt-5',
-											  messages: [
-												{ role: 'user', content: content }
-											  ],
-											  max_tokens: 2000,
-											  temperature: 0.2,
-												response_format: isChartRequest ? { type: "json_object" } : undefined
-											})
-										  });
-									  const data = await response.json();
-									  return data;
+                        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                                                        method: "POST",
+                                                        headers: {
+                                                            "Authorization": `Bearer ${decryptedKey}`,
+                                                            "Content-Type": "application/json"
+                                                        },
+                                                        body: JSON.stringify({
+                                                            "model": "openai/gpt-3.5-turbo",
+                                                            "messages": [
+                                                            {
+                                                                "role": "user",
+                                                                "content": content
+                                                            }
+                                                            ]
+                                                        }),
+                                                        });
+                                                        const data = await response.json();
+                                                        return data;
 									}
+
+
+
+
+
+                                  
+
 
 									// Main logic
 									let data; // Declare data variable
@@ -1222,11 +1228,12 @@ const fetchDataAndProcess = async (objectID) => {
 						} catch (e) {
 							console.error('Error parsing JSON:', e);
 						}
- 					
+ 					   console.log(aiResponse);
                     hideTypingIndicator();
 
                     if (isChartRequest) {
                         try {
+                            console.log(aiResponse);
                             const chartResponse = JSON.parse(aiResponse);
                             lastChartConfig = chartResponse.chartConfig; // Store the chart config
                             const messageText = chartResponse.message || 'Here\'s your chart:';
