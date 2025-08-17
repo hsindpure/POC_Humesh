@@ -132,7 +132,7 @@ window.qlik = qlik;
 	app.getObject('KPI02','ajMAEu');
 	app.getObject('KPI01','NrHfp');
 	
-	app.getObject('QV-02','qamd');
+	app.getObject('QV-02','fQdkG');
 	app.getObject('QV-01','pyQPxfg');
 
 	
