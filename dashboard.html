@@ -9,7 +9,7 @@
     <meta name="description" content="Acturial Dashboard">
 
     <link rel="apple-touch-icon" href="apple-icon.png">
-    <link rel="shortcut icon" href="favicon.ico">
+    <!-- <link rel="shortcut icon" href="favicon.ico"> -->
 	
     <meta name="viewport" content="width=device-width, initial-scale=1.0" >
     <title>Acturial Dashboard</title>
@@ -286,6 +286,18 @@ Shortcuts: @ for tools" autocomplete="off"  maxlength="500">
     </div>
 </div>
 
+
+<div id="secretKeyModal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="close-button" id="closeModalBtn">&times;</button>
+        <h2 class="text-2xl font-bold text-gray-800 text-center mb-2">Enter Secret Key</h2>
+        <p class="text-gray-600 text-center text-sm">Please provide the secret key to proceed.</p>
+        <input type="password" id="secretKeyInput" class="input-field" placeholder="Secret Key">
+        <button id="submitKeyBtn" class="submit-button">Submit Key</button>
+        <div id="messageBox" class="text-center text-sm mt-2 hidden"></div>
+    </div>
+</div>
+
     <!-- Scripts -->
 	
     <script src="data_generator.js"></script>
@@ -430,7 +442,7 @@ $(document).on("click", ".fullscreen-btn", function(){
 			//replace( /T/, ' ' ).replace( /Z/, ' ' )    "+strTime
 	
 	
-	
+var decryptedKey = null;
 	
 	
 	
@@ -677,6 +689,46 @@ var SelectedClientName = document.getElementById("appName");
                 const $voiceBtn = $('.voice-button');
                 const $roleSelect = $('.role-select');
                 const $downloadBtn = $('.download-history');
+              
+                const $modalOverlay = $('#secretKeyModal');
+            const $openBtn = $('#openModalBtn');
+            const $closeBtn = $('#closeModalBtn');
+         
+            const $secretKeyInput = $('#secretKeyInput');
+            const $messageBox = $('#messageBox');
+
+           
+            $("#submitKeyBtn").click(function() {
+                const secretKey = $secretKeyInput.val();
+                if (secretKey.trim() === '') {
+                    showMessage('Please enter a secret key!', 'error');
+                } else {
+                    decryptedKey = secretKey;
+                    $modalOverlay.removeClass('active');
+                }
+            });
+
+
+                // Function to show message
+                function showMessage(message, type = 'info') {
+                $messageBox.removeClass('hidden text-green-600 text-red-600 text-blue-600')
+                           .addClass('block');
+                if (type === 'success') {
+                    $messageBox.addClass('text-green-600');
+                } else if (type === 'error') {
+                    $messageBox.addClass('text-red-600');
+                } else {
+                    $messageBox.addClass('text-blue-600');
+                }
+                $messageBox.text(message);
+            }
+
+            
+            // Function to hide message
+            function hideMessageBox() {
+                $messageBox.addClass('hidden').removeClass('block text-green-600 text-red-600 text-blue-600').text('');
+            }
+
 
                 // Toggle chatbot
             // Toggle chatbot
@@ -685,14 +737,29 @@ var SelectedClientName = document.getElementById("appName");
 					 document.querySelector('.qlik-chatbot-extension').classList.toggle('active');
                     $input.focus();
 					$(this).hide();
+
+                // secret key modal
+                    $modalOverlay.addClass('active');
+                $secretKeyInput.val(''); // Clear input on open
+                hideMessageBox(); // Hide message on open
+
+
+
                 });
 
+        
                 // Close chatbot
                 $close.on('click', function() {
                     $chatbot.removeClass('active');
 					$(".chatbot-toggle").show();
 					 document.querySelector('.qlik-chatbot-extension').classList.toggle('active');
                 });
+
+                $closeBtn.on('click', function() {
+                $modalOverlay.removeClass('active');
+            });
+
+
 
                 // Send message
                 $sendBtn.on('click', sendMessage);
@@ -1140,8 +1207,6 @@ const fetchDataAndProcess = async (objectID) => {
                     const data = await response.json();*/
 					
 					
-			
-            const decryptedKey = "key";
 
                 // const baseUrl = "https://api.groq.com/openai/v1/chat/completions";
 
@@ -1150,7 +1215,7 @@ const fetchDataAndProcess = async (objectID) => {
 
                 // const url = baseUrl;
                 const temp = 0.2; // Ranges 0-2
-
+            
 					async function makeApiCall(content) {
                         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
                                                         method: "POST",
